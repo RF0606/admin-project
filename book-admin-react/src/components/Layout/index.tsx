@@ -1,106 +1,51 @@
-import {
-  LaptopOutlined,
-  NotificationOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
+import React, {ReactNode, useState} from "react";
 import { DownOutlined } from "@ant-design/icons";
 import { MenuProps, Space } from "antd";
 import { Layout as AntdLayout, Breadcrumb, Dropdown, Menu } from "antd";
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React from "react";
-
 import styles from "./index.module.css";
+import { ITEMS } from "./sideBarItems";
+import { USER_ITEMS } from "./userItems"
 
 const { Header, Content, Sider } = AntdLayout;
 
-const items1: MenuProps["items"] = ["1", "2", "3"].map((key) => ({
-  key,
-  label: `nav ${key}`,
-}));
+interface LayoutProps {
+  children: ReactNode;
+}
 
-const items2: MenuProps["items"] = [
-  UserOutlined,
-  LaptopOutlined,
-  NotificationOutlined,
-].map((icon, index) => {
-  const key = String(index + 1);
-
-  return {
-    key: `sub${key}`,
-    icon: React.createElement(icon),
-    label: `subnav ${key}`,
-
-    children: new Array(4).fill(null).map((_, j) => {
-      const subKey = index * 4 + j + 1;
-      return {
-        key: subKey,
-        label: `option${subKey}`,
-      };
-    }),
-  };
-});
-
-const ITEMS = [
-  {
-    // icon: React.createElement(icon),
-    label: "图书管理",
-    key: "book",
-
-    children: [
-      { label: "图书列表", key: "/book" },
-      { label: "图书添加", key: "/book/add" },
-    ],
-  },
-  {
-    // icon: React.createElement(icon),
-    label: "借阅管理",
-    key: "borrow",
-
-    children: [
-      { label: "借阅列表", key: "/borrow" },
-      { label: "借阅添加", key: "/borrow/add" },
-    ],
-  },
-  {
-    // icon: React.createElement(icon),
-    label: "分类管理",
-    key: "category",
-
-    children: [
-      { label: "分类列表", key: "/category" },
-      { label: "分类添加", key: "/category/add" },
-    ],
-  },
-  {
-    // icon: React.createElement(icon),
-    label: "用户管理",
-    key: "user",
-
-    children: [
-      { label: "用户列表", key: "/user" },
-      { label: "用户添加", key: "/user/add" },
-    ],
-  },
-];
-
-const USER_ITEMS: MenuProps["items"] = [
-  {
-    label: "用户中心",
-    key: "1",
-  },
-  {
-    label: "登出",
-    key: "2",
-  },
-];
-
-export function Layout({ children }) {
+//要不然children爆红，不好看
+export function Layout({ children }: LayoutProps) {
+  //next.js用useRouter();替换了vite里那俩
   const router = useRouter();
-  const handleMenuClick = ({ key }) => {
-    router.push(key);
-  };
+
+  //处理点击跳转
+  const menuClick = (e:{key:string}) => {
+    //console.log("点击了",e.key)
+    router.push(e.key)
+  }
+
+  //下面实现自动闭合sidebar和记忆选择
+  function findKey(obj:{key:string}) {
+    return obj.key === router.pathname
+  }
+
+  const keysWithChildren = ITEMS.map(item => {
+    if (item.children && item.children.length > 0 && item.children.find(findKey)) {
+      return item.key;
+    }
+    return null; // 如果没有满足条件的子元素，则返回 null
+  }).filter(key => key !== null) as string[];
+
+  const defaultOpenKey = keysWithChildren.length > 0 ? keysWithChildren[0] : "";
+  const [openKeys, setOpenKeys] = useState<string[]>([defaultOpenKey]);
+  const handleOpenChange = (keys: string[]) => {
+    //这块需要传递一个数组下来，上边初始化的时候也要初始化成一个空数组，保持一致性
+    setOpenKeys([keys[keys.length-1]])
+  }
+
+  //页面
   return (
     <>
       <Head>
@@ -135,11 +80,12 @@ export function Layout({ children }) {
             <Sider width={200}>
               <Menu
                 mode="inline"
-                defaultSelectedKeys={["/book"]}
-                defaultOpenKeys={["book"]}
+                defaultSelectedKeys={[router.pathname]}
                 style={{ height: "100%", borderRight: 0 }}
                 items={ITEMS}
-                onClick={handleMenuClick}
+                onClick={menuClick}
+                onOpenChange = {handleOpenChange}
+                openKeys = {openKeys}
               />
             </Sider>
             <AntdLayout className={styles.sectionContent}>
