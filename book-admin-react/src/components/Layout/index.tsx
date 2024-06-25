@@ -11,11 +11,11 @@ import { USER_ITEMS } from "./userItems"
 
 const { Header, Content, Sider } = AntdLayout;
 
+//处理下面children爆红问题的
 interface LayoutProps {
   children: ReactNode;
 }
 
-//要不然children爆红，不好看
 export function Layout({ children }: LayoutProps) {
   //next.js用useRouter();替换了vite里那俩
   const router = useRouter();
