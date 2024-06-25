@@ -110,7 +110,7 @@ export default function Home() {
     router.push('/book/edit/id')
   }
 
-  //分页
+  //分页, 有then就不用await，不要同时用
   const handleTableChange = (pagination: TablePaginationConfig) => {
     //setPagination(pagination)
     const query = form.getFieldsValue() // query是对应查询form里的value
