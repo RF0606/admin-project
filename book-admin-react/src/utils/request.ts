@@ -3,10 +3,22 @@ import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import Router from "next/router";
 
 interface AxiosInstanceType extends AxiosInstance {
-    get<T = any>(url: string, config?: AxiosRequestConfig): Promise<T>;
-    delete<T = any>(url: string, config?: AxiosRequestConfig): Promise<T>;
-    head<T = any>(url: string, config?: AxiosRequestConfig): Promise<T>;
-    options<T = any>(url: string, config?: AxiosRequestConfig): Promise<T>;
+    get<T = any>(
+        url: string, 
+        config?: AxiosRequestConfig
+    ): Promise<T>;
+    delete<T = any>(
+        url: string, 
+        config?: AxiosRequestConfig
+    ): Promise<T>;
+    head<T = any>(
+        url: string, 
+        config?: AxiosRequestConfig
+    ): Promise<T>;
+    options<T = any>(
+        url: string, 
+        config?: AxiosRequestConfig
+    ): Promise<T>;
     post<T = any>(
         url: string,
         data?: any,

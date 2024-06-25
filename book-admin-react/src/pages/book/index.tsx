@@ -73,18 +73,20 @@ export default function Home() {
   const [data, setData] = useState([])
   const [pagination, setPagination] = useState<TablePaginationConfig>({
     current: 1,
-    pageSize: 20,
+    pageSize: 10,
     showSizeChanger: true,
     total: 0
   })
 
   //render渲染完之后加载，如果[]内的东西有改变，继续加载useEffect内的
   useEffect(() => {
+    //渲染之后更新页面信息
     async function fetchData() {
       const res = await getBookList({ current: 1, pageSize: pagination.pageSize }) //带着当前页和页面大小传给后端，获取对应数据，set到data里
       console.log(res)
       const { data } = res
       setData(data)
+      setPagination(prev => ({ ...prev, current: 1, total: res.total }))
     }
     fetchData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -110,9 +112,9 @@ export default function Home() {
     router.push('/book/edit/id')
   }
 
-  //分页
+  //分页, 有then就不用await，不要同时用
   const handleTableChange = (pagination: TablePaginationConfig) => {
-    //setPagination(pagination)
+    setPagination(pagination)
     const query = form.getFieldsValue() // query是对应查询form里的value
     getBookList({ //用新的条件去获取新的数据
       current: pagination.current,
