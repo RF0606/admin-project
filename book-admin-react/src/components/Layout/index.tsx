@@ -1,7 +1,7 @@
 import React, {ReactNode, useState} from "react";
 import { DownOutlined } from "@ant-design/icons";
-import { MenuProps, Space } from "antd";
-import { Layout as AntdLayout, Breadcrumb, Dropdown, Menu } from "antd";
+import { Space } from "antd";
+import { Layout as AntdLayout, Dropdown, Menu } from "antd";
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
