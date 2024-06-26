@@ -14,6 +14,7 @@ import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import styles from "./index.module.css";
+import Content from "../Content";
 const { TextArea } = Input;
 
 
@@ -36,7 +37,7 @@ export default function BookForm() {
     };
 
     return (
-        <>
+        <Content title="图书添加">
             <Form
                 form={form}
                 className={styles.form}
@@ -90,7 +91,7 @@ export default function BookForm() {
                 </Form.Item>
 
                 {/* 封面 */}
-                <Form.Item label="封面" name="cover"> 
+                <Form.Item label="封面" name="cover">
                     <Input.Group compact>
                         <Input
                             placeholder="请输入"
@@ -139,6 +140,6 @@ export default function BookForm() {
                     >创建</Button>
                 </Form.Item>
             </Form>
-        </>
+        </Content>
     );
 }
