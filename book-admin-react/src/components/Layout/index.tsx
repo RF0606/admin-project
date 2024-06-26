@@ -1,4 +1,4 @@
-import React, {ReactNode, useState} from "react";
+import React, { ReactNode, useState } from "react";
 import { DownOutlined } from "@ant-design/icons";
 import { Space } from "antd";
 import { Layout as AntdLayout, Dropdown, Menu } from "antd";
@@ -18,16 +18,17 @@ interface LayoutProps {
 
 export function Layout({ children }: LayoutProps) {
   //next.js用useRouter();替换了vite里那俩
-  const router = useRouter();
+  const router = useRouter()
+  const activeMenu = router.pathname
 
   //处理点击跳转
-  const menuClick = (e:{key:string}) => {
+  const menuClick = (e: { key: string }) => {
     //console.log("点击了",e.key)
     router.push(e.key)
   }
 
   //下面实现自动闭合sidebar和记忆选择
-  function findKey(obj:{key:string}) {
+  function findKey(obj: { key: string }) {
     return obj.key === router.pathname
   }
 
@@ -42,7 +43,7 @@ export function Layout({ children }: LayoutProps) {
   const [openKeys, setOpenKeys] = useState<string[]>([defaultOpenKey]);
   const handleOpenChange = (keys: string[]) => {
     //这块需要传递一个数组下来，上边初始化的时候也要初始化成一个空数组，保持一致性
-    setOpenKeys([keys[keys.length-1]])
+    setOpenKeys([keys[keys.length - 1]])
   }
 
   //页面
@@ -81,11 +82,12 @@ export function Layout({ children }: LayoutProps) {
               <Menu
                 mode="inline"
                 defaultSelectedKeys={[router.pathname]}
+                selectedKeys={[activeMenu]}
                 style={{ height: "100%", borderRight: 0 }}
                 items={ITEMS}
                 onClick={menuClick}
-                onOpenChange = {handleOpenChange}
-                openKeys = {openKeys}
+                onOpenChange={handleOpenChange}
+                openKeys={openKeys}
               />
             </Sider>
             <AntdLayout className={styles.sectionContent}>

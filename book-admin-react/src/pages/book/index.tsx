@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import styles from "./index.module.css"
 import { getBookList } from "@/api/book";
 import { BookQueryType } from "@/type";
+import Content from "@/components/Content";
 
 const COLUMNS = [
   {
@@ -139,66 +140,78 @@ export default function Home() {
   }
   ]
 
-  return <>
-    <Form
-      name="search"
-      form={form}
-      onFinish={handleSearchFinish}
-      initialValues={{
-        name: '',
-        author: '',
-        category: ''
-      }}
+  return (
+    <Content
+      title="图书列表"
+      operation={
+        <Button
+          type="primary"
+          onClick={() => {
+            router.push("/book/add")
+          }}
+        >添加</Button>
+      }
     >
-      <Row gutter={24}>
-        <Col span={5}>
-          <Form.Item name="name" label="名称">
-            <Input placeholder="请输入" allowClear />
-          </Form.Item>
-        </Col>
+      <Form
+        name="search"
+        form={form}
+        onFinish={handleSearchFinish}
+        initialValues={{
+          name: '',
+          author: '',
+          category: ''
+        }}
+      >
+        <Row gutter={24}>
+          <Col span={5}>
+            <Form.Item name="name" label="名称">
+              <Input placeholder="请输入" allowClear />
+            </Form.Item>
+          </Col>
 
-        <Col span={5}>
-          <Form.Item name="author" label="作者" >
-            <Input placeholder="请输入" allowClear />
-          </Form.Item>
-        </Col>
+          <Col span={5}>
+            <Form.Item name="author" label="作者" >
+              <Input placeholder="请输入" allowClear />
+            </Form.Item>
+          </Col>
 
-        <Col span={5}>
-          <Form.Item name="category" label="分类" >
-            <Select
-              allowClear
-              showSearch
-              placeholder="请选择"
-              options={[
-                { value: 'jack', label: 'Jack' },
-                { value: 'lucy', label: 'Lucy' },
-                { value: 'Yiminghe', label: 'yiminghe' },
-                { value: 'disabled', label: 'Disabled', disabled: true },
-              ]}
-            />
-          </Form.Item>
-        </Col>
+          <Col span={5}>
+            <Form.Item name="category" label="分类" >
+              <Select
+                allowClear
+                showSearch
+                placeholder="请选择"
+                options={[
+                  { value: 'jack', label: 'Jack' },
+                  { value: 'lucy', label: 'Lucy' },
+                  { value: 'Yiminghe', label: 'yiminghe' },
+                  { value: 'disabled', label: 'Disabled', disabled: true },
+                ]}
+              />
+            </Form.Item>
+          </Col>
 
-        <Col span={9}>
-          <Form.Item>
-            <Space>
-              <Button type="primary" htmlType="submit">搜索</Button>
-              <Button htmlType="submit" onClick={handleSearchReset}>清空</Button>
-            </Space>
-          </Form.Item>
-        </Col>
-      </Row>
-    </Form>
+          <Col span={9}>
+            <Form.Item>
+              <Space>
+                <Button type="primary" htmlType="submit">搜索</Button>
+                <Button htmlType="submit" onClick={handleSearchReset}>清空</Button>
+              </Space>
+            </Form.Item>
+          </Col>
+        </Row>
+      </Form>
 
-    {/*书籍页面显示*/}
-    <div className={styles.tableWrap}>
-      <Table
-        dataSource={data}
-        columns={columns}
-        scroll={{ x: 1000 }}
-        onChange={handleTableChange}
-        pagination={{ ...pagination, showTotal: () => `共 ${pagination.total} 条` }}
-      />
-    </div>
-  </>
+      {/*书籍页面显示*/}
+      <div className={styles.tableWrap}>
+        <Table
+          dataSource={data}
+          columns={columns}
+          scroll={{ x: 1000 }}
+          onChange={handleTableChange}
+          pagination={{ ...pagination, showTotal: () => `共 ${pagination.total} 条` }}
+        />
+      </div>
+    </Content>
+  )
 }
