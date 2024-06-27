@@ -32,7 +32,6 @@ export default function BookForm() {
         await bookAdd(values);
         message.success("创建成功");
         router.push("/book");
-        // 跳转之后sidebar不太能正常显示，考虑给sidebar那个调整成全局变量
         //console.log(values)
     };
 
