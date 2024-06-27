@@ -19,6 +19,7 @@ interface LayoutProps {
 export function Layout({ children }: LayoutProps) {
   //next.js用useRouter();替换了vite里那俩
   const router = useRouter()
+  //用于实现跳转之后正确显示在哪个路径上
   const activeMenu = router.pathname
 
   //处理点击跳转
