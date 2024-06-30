@@ -13,4 +13,9 @@ export async function getBookList(params?: BookQueryType) {
 //添加图书
 export async function bookAdd(params: BookType) {
     return request.post("/api/books", params);
-  }
+}
+
+//删除book
+export async function bookDelete(id: string){
+    return  request.delete(`/api/books/${id}`);
+}
