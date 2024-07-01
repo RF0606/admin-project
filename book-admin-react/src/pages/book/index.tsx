@@ -4,8 +4,9 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styles from "./index.module.css"
 import { bookDelete, getBookList } from "@/api/book";
-import { BookQueryType } from "@/type";
+import { BookQueryType, CategoryType } from "@/type";
 import Content from "@/components/Content";
+import { getCategoryList } from "@/api/category";
 
 const COLUMNS = [
   {
@@ -66,11 +67,12 @@ const COLUMNS = [
   },
 ];
 
-export default function Home() {
+export default function Book() {
   //数据，和部分初始化，任何状态的更新都会重新渲染页面
   const [form] = Form.useForm();
   const router = useRouter();
   const [data, setData] = useState([]);
+  const [categoryList, setCategoryList] = useState<CategoryType[]>([]);
   const [pagination, setPagination] = useState<TablePaginationConfig>({
     current: 1,
     pageSize: 10,
@@ -80,10 +82,10 @@ export default function Home() {
 
 
   async function fetchData(values?: any) {
-    const res = await getBookList({ 
-      current: pagination.current, 
+    const res = await getBookList({
+      current: pagination.current,
       pageSize: pagination.pageSize,
-      ...values, 
+      ...values,
     }); //带着当前页和页面大小传给后端，获取对应数据，set到data里
     // console.log(res)
     const { data } = res;
@@ -95,6 +97,9 @@ export default function Home() {
   useEffect(() => {
     //渲染之后更新页面信息
     fetchData();
+    getCategoryList({ all: true }).then(res => { 
+      setCategoryList(res.data); 
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -102,10 +107,10 @@ export default function Home() {
   //搜索功能
   const handleSearchFinish = async (values: BookQueryType) => {
     //console.log(values) //搜索框里的value
-    const res = await getBookList({ 
-      ...values, 
-      current: 1, 
-      pageSize: pagination.pageSize 
+    const res = await getBookList({
+      ...values,
+      current: 1,
+      pageSize: pagination.pageSize
     }); //带着选好的value，以及设定好的当前页和pagesize，传给后端，获取对应数据，放到res里
     setData(res.data)
     setPagination(prev => ({ ...prev, current: 1, total: res.total })) //prev指的是先前配置, 查询完之后更新分页的数据，保证在第一页，还有总数
@@ -142,7 +147,7 @@ export default function Home() {
       title: "确定删除?",
       okText: "确定",
       cancelText: "取消",
-      async onOk(){
+      async onOk() {
         await bookDelete(id);
         message.success("删除成功");
         fetchData(form.getFieldsValue());
@@ -155,10 +160,10 @@ export default function Home() {
   {
     title: '操作', key: "action", render: (_: any, row: any) => {
       return (
-      <Space>
-        <Button type="link" onClick={() => {handleBookEdit(row._id)}}>编辑</Button>
-        <Button type="link" danger onClick={() => { handleBookDelete(row._id) }}>删除</Button>
-      </Space>
+        <Space>
+          <Button type="link" onClick={() => { handleBookEdit(row._id) }}>编辑</Button>
+          <Button type="link" danger onClick={() => { handleBookDelete(row._id) }}>删除</Button>
+        </Space>
       )
     }
   }
@@ -205,12 +210,10 @@ export default function Home() {
                 allowClear
                 showSearch
                 placeholder="请选择"
-                options={[
-                  { value: 'jack', label: 'Jack' },
-                  { value: 'lucy', label: 'Lucy' },
-                  { value: 'Yiminghe', label: 'yiminghe' },
-                  { value: 'disabled', label: 'Disabled', disabled: true },
-                ]}
+                options={categoryList.map((item) => ({
+                  label: item.name,
+                  value: item._id,
+                }))}
               />
             </Form.Item>
           </Col>

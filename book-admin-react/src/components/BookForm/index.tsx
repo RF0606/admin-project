@@ -1,5 +1,5 @@
 import { bookAdd } from "@/api/book";
-import { BookType } from "@/type";
+import { BookType, CategoryType } from "@/type";
 import {
     Button,
     DatePicker,
@@ -15,6 +15,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import styles from "./index.module.css";
 import Content from "../Content";
+import { getCategoryList } from "@/api/category";
 const { TextArea } = Input;
 
 
@@ -23,6 +24,7 @@ export default function BookForm() {
     //antd创建表单用的
     const [form] = Form.useForm();
     const router = useRouter();
+    const [categoryList, setCategoryList] = useState<CategoryType[]>([]);
 
     const handleFinish = async (values: BookType) => {
         //如果输入的有publishAt就转换成一个时间戳格式
@@ -34,6 +36,13 @@ export default function BookForm() {
         router.push("/book");
         //console.log(values)
     };
+
+    //完善分类列表内的内容
+    useEffect(()=>{
+        getCategoryList({ all: true }).then(res => { 
+            setCategoryList(res.data); 
+          });
+    },[]);
 
     return (
         <Content title="图书添加">
@@ -84,9 +93,13 @@ export default function BookForm() {
                         },
                     ]}
                 >
-                    <Select placeholder="请选择">
-                        <Select.Option value="demo">Demo</Select.Option>
-                    </Select>
+                    <Select 
+                    placeholder="请选择"
+                    options={ categoryList.map((item) => ({
+                        label: item.name,
+                        value: item._id,
+                    }))}
+                    ></Select>
                 </Form.Item>
 
                 {/* 封面 */}
