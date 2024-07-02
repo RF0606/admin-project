@@ -19,3 +19,7 @@ export async function userDelete(id: string) {
 export async function userUpdate(params: UserType) {
   return request.put("/api/users", params);
 }
+
+export async function getUserDetail(id: string) {
+  return request.get(`/api/users/${id}`);
+} 

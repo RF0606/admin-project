@@ -9,7 +9,7 @@ import { Inter } from "next/font/google";
 import { useEffect, useState } from "react";
 
 
-export default function BorrowForm({ title, editData }: { title: string, editData: any }) {
+export default function BorrowForm({ title, editData }: { title: string, editData?: any }) {
     const [form] = Form.useForm();
     const [userList, setUserList] = useState([]);
     const [bookList, setBookList] = useState([]);
