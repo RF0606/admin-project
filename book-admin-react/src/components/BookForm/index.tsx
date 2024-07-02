@@ -1,5 +1,6 @@
 import { bookAdd } from "@/api/book";
 import { BookType, CategoryType } from "@/type";
+import { getCategoryList } from "@/api/category";
 import {
     Button,
     DatePicker,
@@ -13,18 +14,21 @@ import {
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+
 import styles from "./index.module.css";
 import Content from "../Content";
-import { getCategoryList } from "@/api/category";
+
+const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 
 
-export default function BookForm() {
+export default function BookForm({ title }: { title: string }) {
     const [preview, setPreview] = useState("");
     //antd创建表单用的
     const [form] = Form.useForm();
-    const router = useRouter();
     const [categoryList, setCategoryList] = useState<CategoryType[]>([]);
+    const router = useRouter();
+
 
     const handleFinish = async (values: BookType) => {
         //如果输入的有publishAt就转换成一个时间戳格式
@@ -34,21 +38,19 @@ export default function BookForm() {
         await bookAdd(values);
         message.success("创建成功");
         router.push("/book");
-        //console.log(values)
     };
 
     //完善分类列表内的内容
-    useEffect(()=>{
-        getCategoryList({ all: true }).then(res => { 
-            setCategoryList(res.data); 
-          });
-    },[]);
+    useEffect(() => {
+        getCategoryList({ all: true }).then(res => {
+            setCategoryList(res.data);
+        });
+    }, []);
 
     return (
-        <Content title="图书添加">
+        <Content title={title}>
             <Form
                 form={form}
-                className={styles.form}
                 labelCol={{ span: 4 }}
                 wrapperCol={{ span: 20 }}
                 layout="horizontal"
@@ -93,12 +95,12 @@ export default function BookForm() {
                         },
                     ]}
                 >
-                    <Select 
-                    placeholder="请选择"
-                    options={ categoryList.map((item) => ({
-                        label: item.name,
-                        value: item._id,
-                    }))}
+                    <Select
+                        placeholder="请选择"
+                        options={categoryList.map((item) => ({
+                            label: item.name,
+                            value: item._id,
+                        }))}
                     ></Select>
                 </Form.Item>
 

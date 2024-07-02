@@ -195,8 +195,8 @@ export default function Borrow() {
         onFinish={handleSearchFinish}
         initialValues={{
           name: '',
-          author: '',
-          category: ''
+          status: '',
+          user: ''
         }}
       >
         <Row gutter={24}>
