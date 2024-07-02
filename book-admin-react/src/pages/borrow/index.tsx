@@ -125,8 +125,8 @@ export default function Borrow() {
     form.resetFields();
   };
 
-  //编辑book
-  const handleBookEdit = (id: string) => {
+  //编辑borrow
+  const handleBorrowEdit = (id: string) => {
     router.push(`/borrow/edit/${id}`);
   };
 
@@ -169,7 +169,9 @@ export default function Borrow() {
     title: '操作', key: "action", render: (_: any, row: any) => {
       return (
         <Space>
-          <Button type="link" onClick={() => { handleBookEdit(row._id) }}>编辑</Button>
+          {row.status === "on" && (
+            <Button type="link" onClick={() => { handleBorrowEdit(row._id) }}>归还</Button>
+          )}
           <Button type="link" danger onClick={() => { handleBorrowDelete(row._id) }}>删除</Button>
         </Space>
       )
