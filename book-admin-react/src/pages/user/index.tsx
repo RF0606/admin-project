@@ -3,9 +3,8 @@ import dayjs from 'dayjs'
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styles from "./index.module.css"
-import { CategoryQueryType, UserQueryType, UserType } from "@/type";
+import { UserQueryType, UserType } from "@/type";
 import Content from "@/components/Content";
-import { categoryDelete, getCategoryList } from "@/api/category";
 import { getUserList, userDelete, userUpdate } from "@/api/user";
 
 
