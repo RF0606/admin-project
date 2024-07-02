@@ -171,8 +171,7 @@ export default function Category() {
         onFinish={handleSearchFinish}
         initialValues={{
           name: '',
-          author: '',
-          category: ''
+          level: ''
         }}
       >
         <Row gutter={24}>

@@ -1,5 +1,5 @@
-import BookForm from "@/components/BookForm";
+import CategoryForm from "@/components/CategoryForm";
 
 export default function Home() {
-  return <BookForm />;
+  return <CategoryForm title="分类编辑"/>;
 }
