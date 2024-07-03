@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from "react";
+import React, { PropsWithChildren, ReactNode, useState } from "react";
 import { DownOutlined } from "@ant-design/icons";
 import { Space } from "antd";
 import { Layout as AntdLayout, Dropdown, Menu } from "antd";
@@ -15,23 +15,23 @@ const { Header, Content, Sider } = AntdLayout;
 interface LayoutProps {
   children: ReactNode;
 }
-
-export function Layout({ children }: LayoutProps) {
+// export function Layout({ children }: LayoutProps) {
+export const Layout: React.FC<PropsWithChildren> = ({ children }) => {
   //next.js用useRouter();替换了vite里那俩
-  const router = useRouter()
+  const router = useRouter();
   //用于实现跳转之后正确显示在哪个路径上
-  const activeMenu = router.pathname
+  const activeMenu = router.pathname;
 
   //处理点击跳转
   const menuClick = (e: { key: string }) => {
     //console.log("点击了",e.key)
-    router.push(e.key)
-  }
+    router.push(e.key);
+  };
 
   //下面实现自动闭合sidebar和记忆选择
   function findKey(obj: { key: string }) {
     return obj.key === router.pathname
-  }
+  };
 
   const keysWithChildren = ITEMS.map(item => {
     if (item.children && item.children.length > 0 && item.children.find(findKey)) {
@@ -44,8 +44,8 @@ export function Layout({ children }: LayoutProps) {
   const [openKeys, setOpenKeys] = useState<string[]>([defaultOpenKey]);
   const handleOpenChange = (keys: string[]) => {
     //这块需要传递一个数组下来，上边初始化的时候也要初始化成一个空数组，保持一致性
-    setOpenKeys([keys[keys.length - 1]])
-  }
+    setOpenKeys([keys[keys.length - 1]]);
+  };
 
   //页面
   return (
@@ -99,4 +99,4 @@ export function Layout({ children }: LayoutProps) {
       </main>
     </>
   );
-}
+};

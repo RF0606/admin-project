@@ -20,6 +20,17 @@ export async function userUpdate(params: UserType) {
   return request.put("/api/users", params);
 }
 
+//详细信息
 export async function getUserDetail(id: string) {
   return request.get(`/api/users/${id}`);
-} 
+}
+
+//登录
+export async function login(params: Pick<UserType, "name" | "password">) {
+  return request.post("/api/login", params);
+}
+
+//登出
+export async function logout() {
+  return request.get("/api/logout");
+}
