@@ -15,7 +15,7 @@ const { Header, Content, Sider } = AntdLayout;
 interface LayoutProps {
   children: ReactNode;
 }
-// export function Layout({ children }: LayoutProps)
+// export function Layout({ children }: LayoutProps) {
 export const Layout: React.FC<PropsWithChildren> = ({ children }) => {
   //next.js用useRouter();替换了vite里那俩
   const router = useRouter();
