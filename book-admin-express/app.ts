@@ -1,3 +1,5 @@
+import { User } from "./model";
+
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -23,6 +25,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // app.use('/', indexRouter);
 // app.use('/users', usersRouter);
+app.get('/', (request, response) => {
+  const userModel = new User({ name: 'peter', nickName: '皮特' });
+  userModel.save();
+  response.json({success: true});
+})
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -40,4 +47,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+app.listen('3005', ()=> {
+  console.log('server start at 3005');
+})
 module.exports = app;
