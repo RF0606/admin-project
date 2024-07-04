@@ -1,3 +1,4 @@
+import bookSchema from "./bookModel";
 import userSchema from "./userModel";
 
 const mongoose = require('mongoose');
@@ -14,4 +15,5 @@ main().then(() => {
 })
 
 const User = mongoose.model('User', userSchema);
-export { User };
+const Book = mongoose.model('Book', bookSchema);
+export { User, Book };

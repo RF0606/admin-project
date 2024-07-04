@@ -85,7 +85,7 @@ export default function BookForm({ title }: { title: string }) {
                 </Form.Item>
 
                 {/* 分类 */}
-                <Form.Item
+                {/* <Form.Item
                     label="分类"
                     name="category"
                     rules={[
@@ -102,7 +102,7 @@ export default function BookForm({ title }: { title: string }) {
                             value: item._id,
                         }))}
                     ></Select>
-                </Form.Item>
+                </Form.Item> */}
 
                 {/* 封面 */}
                 <Form.Item label="封面" name="cover">
