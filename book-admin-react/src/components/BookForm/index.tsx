@@ -29,7 +29,7 @@ export default function BookForm({ title }: { title: string }) {
     const [categoryList, setCategoryList] = useState<CategoryType[]>([]);
     const router = useRouter();
 
-
+    //提交表单时的操作
     const handleFinish = async (values: BookType) => {
         //如果输入的有publishAt就转换成一个时间戳格式
         if (values.publishAt) {
