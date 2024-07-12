@@ -1,4 +1,4 @@
-import { bookAdd } from "@/api/book";
+import { bookAdd, bookUpdate } from "@/api/book";
 import { BookType, CategoryType } from "@/type";
 import { getCategoryList } from "@/api/category";
 import {
@@ -22,12 +22,25 @@ const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 
 
-export default function BookForm({ title }: { title: string }) {
+export default function BookForm({
+    title,
+    editData
+}: {
+    title: string,
+    editData: BookType
+}) {
     const [preview, setPreview] = useState("");
     //antd创建表单用的
     const [form] = Form.useForm();
     const [categoryList, setCategoryList] = useState<CategoryType[]>([]);
     const router = useRouter();
+
+    useEffect(() => {
+        if (editData?._id) {
+            form.setFieldsValue({ ...editData });
+        }
+
+    }, [editData, form]);
 
     //提交表单时的操作
     const handleFinish = async (values: BookType) => {
@@ -35,7 +48,11 @@ export default function BookForm({ title }: { title: string }) {
         if (values.publishAt) {
             values.publishAt = dayjs(values.publishAt).valueOf();
         }
-        await bookAdd(values);
+        if (editData?._id) {
+            await bookUpdate(editData._id, values);
+        }else{
+            await bookAdd(values);
+        }
         message.success("创建成功");
         router.push("/book");
     };
@@ -151,7 +168,7 @@ export default function BookForm({ title }: { title: string }) {
                         type="primary"
                         htmlType="submit" //保证触发form表单的默认提交行为，触发rules的规则
                         className={styles.btn}
-                    >创建</Button>
+                    >{editData?._id ? '更新' : '创建'}</Button>
                 </Form.Item>
             </Form>
         </Content>
