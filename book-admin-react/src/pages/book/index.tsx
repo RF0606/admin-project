@@ -38,7 +38,10 @@ const COLUMNS = [
     title: '分类',
     dataIndex: 'category',
     key: 'category',
-    width: 80
+    width: 80,
+    render: (text: any) => {
+      return text?.name;
+    }
   },
   {
     title: '描述',
