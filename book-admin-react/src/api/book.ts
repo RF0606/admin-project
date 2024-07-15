@@ -15,7 +15,7 @@ export const bookUpdate = (id: string, params: BookType) => {
     return request.put(`/api/books/${id}`, params);
 };
 
-//添加图书
+// 添加图书
 export async function bookAdd(params: BookType) {
     return request.post("/api/books", params);
 }
@@ -25,7 +25,7 @@ export const getBookDetail = (id: string) => {
     return request.get(`/api/books/${id}`);
 };
 
-//删除book
+// 删除book
 export async function bookDelete(id: string) {
     return request.delete(`/api/books/${id}`);
 }

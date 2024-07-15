@@ -39,7 +39,6 @@ export default function BookForm({
         if (editData?._id) {
             form.setFieldsValue({ ...editData });
         }
-
     }, [editData, form]);
 
     //提交表单时的操作
@@ -50,10 +49,11 @@ export default function BookForm({
         }
         if (editData?._id) {
             await bookUpdate(editData._id, values);
+            message.success("修改成功");
         }else{
             await bookAdd(values);
+            message.success("创建成功");
         }
-        message.success("创建成功");
         router.push("/book");
     };
 
