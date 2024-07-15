@@ -1,5 +1,6 @@
 import { User } from "./model";
 import BookRouter from './routes/book';
+import CategoryRouter from './routes/category';
 import express, { Request, Response, NextFunction } from 'express';
 
 var createError = require('http-errors');
@@ -25,7 +26,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // app.use('/', indexRouter);
 // app.use('/users', usersRouter);
 app.use('/api/books', BookRouter);
-
+app.use('/api/categories', CategoryRouter);
 // catch 404 and forward to error handler
 app.use(function(req: Request, res: Response, next: NextFunction) {
   next(createError(404));

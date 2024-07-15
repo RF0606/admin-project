@@ -3,6 +3,7 @@ import { Book } from '../model';
 
 const router = express.Router();
 
+//创建
 router.post('/', async (req: Request, res: Response) => {
     // const body = req.body;
     // console.log(body);
@@ -11,6 +12,8 @@ router.post('/', async (req: Request, res: Response) => {
     return res.json({ success: true, code: 200 });
 });
 
+
+//获取信息
 router.get('/', async (req: Request, res: Response) => {
     const { current = 1, pageSize = 10, name, author, category } = req.query;
     // book.find找到的是所有数据，这块是略过前面页面所有的数据，然后要对当前页开始
@@ -47,23 +50,25 @@ router.get('/:id', async (req: Request, res: Response) => {
     }
 });
 
+//更新
 router.put('/:id', async (req: Request, res: Response) => {
     try {
-        await Book.findOneAndUpdate({ _id: req.params.id}, req.body);
+        await Book.findOneAndUpdate({ _id: req.params.id }, req.body);
         return res.status(200).json({ success: true });
     } catch (error) {
         res.status(500).json({ error });
     }
 });
 
-router.delete('/:id', async (req: Request, res: Response) => { 
+//删除
+router.delete('/:id', async (req: Request, res: Response) => {
     const { id } = req.params;
     const book = await Book.findById(id);
-    if(book){
-        await Book.deleteOne({ _id: id});
+    if (book) {
+        await Book.deleteOne({ _id: id });
 
         return res.status(200).json({ success: true });
-    }else{
+    } else {
         res.status(500).json({ message: '该书籍不存在' });
     }
 });
