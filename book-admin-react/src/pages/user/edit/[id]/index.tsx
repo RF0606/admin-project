@@ -9,11 +9,11 @@ export default function UserEdit() {
   const [data, setData] = useState();
 
   useEffect(()=>{
-    if(id){
-      getUserDetail(id as string).then((res) => {
+    (async () => {
+      await getUserDetail(id as string).then((res) => {
         setData(res.data);
       });
-    }
+    })();
   },[id]);
 
   return <UserForm title="用户编辑" editData={data}/>;
