@@ -25,7 +25,10 @@ router.get('/', async (req: Request, res: Response) => {
         ...(name && { name }),
         ...(author && { author }),
         ...(category && { category }),
-    }).skip((Number(current) - 1) * Number(pageSize))
+    })
+        .populate('category')
+        .sort({ updatedAt: -1 })
+        .skip((Number(current) - 1) * Number(pageSize))
         .limit(Number(pageSize));
 
 
@@ -41,7 +44,7 @@ router.get('/', async (req: Request, res: Response) => {
 // 获取书籍详细信息
 router.get('/:id', async (req: Request, res: Response) => {
     const { id } = req.params;
-    const book = await Book.findById(id);
+    const book = await Book.findById(id).populate('category');
     console.log(book);
     if (book) {
         res.status(200).json({ data: book, success: true });

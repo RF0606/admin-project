@@ -70,7 +70,7 @@ export default function User() {
       current: pagination.current,
       pageSize: pagination.pageSize,
       ...values,
-    }); 
+    });
     console.log(res);
     const { data } = res;
     setData(data);
@@ -90,7 +90,7 @@ export default function User() {
       ...values,
       current: 1,
       pageSize: pagination.pageSize,
-    }); 
+    });
     // console.log(res);
     setData(res.data);
     // setPagination({ ...pagination, current: 1, total: res.total });
@@ -110,14 +110,14 @@ export default function User() {
   //分页
   const handleTableChange = (pagination: TablePaginationConfig) => {
     setPagination(pagination);
-    const query = form.getFieldsValue(); 
-    getUserList({ 
+    const query = form.getFieldsValue();
+    getUserList({
       current: pagination.current,
       pageSize: pagination.pageSize,
       ...query,
-    }).then(res => { 
+    }).then(res => {
       setData(res.data);
-      setPagination(pagination); 
+      setPagination(pagination);
     });
   };
 
@@ -136,10 +136,11 @@ export default function User() {
   };
 
   //user状态更新，row的type还待确定一下
-  const handleStatusChange = async(row: any) =>{
+  const handleStatusChange = async (row: any) => {
     const status = row.status === STATUS.ON ? STATUS.OFF : STATUS.ON;
 
-    await userUpdate({
+    await userUpdate(
+      row._id, {
       ...row,
       status,
     });
@@ -153,7 +154,7 @@ export default function User() {
       return (
         <Space>
           <Button type="link" onClick={() => { handleUserEdit(row._id) }}>编辑</Button>
-          <Button type="link" danger={row.status === STATUS.ON ? true : false} onClick={() => {handleStatusChange(row)}}>{row.status === STATUS.ON ? "禁用" : "启用"}</Button>
+          <Button type="link" danger={row.status === STATUS.ON ? true : false} onClick={() => { handleStatusChange(row) }}>{row.status === STATUS.ON ? "禁用" : "启用"}</Button>
           <Button type="link" danger onClick={() => { handleUserDelete(row._id) }}>删除</Button>
         </Space>
       );

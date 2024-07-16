@@ -34,10 +34,21 @@ export default function BookForm({
     const [form] = Form.useForm();
     const [categoryList, setCategoryList] = useState<CategoryType[]>([]);
     const router = useRouter();
+    const [cover, setCover] = useState<string>();
 
     useEffect(() => {
         if (editData?._id) {
-            form.setFieldsValue({ ...editData });
+            const data = {
+                ...editData,
+                category: editData.category
+                    ? (editData.category as unknown as CategoryType)._id
+                    : undefined,
+                publishAt: editData.publishAt ? dayjs(editData.publishAt) : undefined,
+            };
+            setCover(editData.cover);
+            // editData.publishAt = dayjs(editData.publishAt);
+            // form.setFieldsValue({ ...editData });
+            form.setFieldsValue(data);
         }
     }, [editData, form]);
 
@@ -50,7 +61,7 @@ export default function BookForm({
         if (editData?._id) {
             await bookUpdate(editData._id, values);
             message.success("修改成功");
-        }else{
+        } else {
             await bookAdd(values);
             message.success("创建成功");
         }
@@ -102,7 +113,7 @@ export default function BookForm({
                 </Form.Item>
 
                 {/* 分类 */}
-                {/* <Form.Item
+                <Form.Item
                     label="分类"
                     name="category"
                     rules={[
@@ -119,7 +130,7 @@ export default function BookForm({
                             value: item._id,
                         }))}
                     ></Select>
-                </Form.Item> */}
+                </Form.Item>
 
                 {/* 封面 */}
                 <Form.Item label="封面" name="cover">

@@ -31,11 +31,12 @@ export default function UserForm({
 
     const handleFinish = async (values: UserType) => {
         if(editData?._id){
-            await userUpdate(values);
+            await userUpdate(editData._id, values);
+            message.success("编辑成功");
         }else{
             await userAdd(values);
+            message.success("创建成功");
         }
-        message.success("创建成功");
         router.push("/user");
     };
 
@@ -122,7 +123,7 @@ export default function UserForm({
                         type="primary"
                         htmlType="submit" //保证触发form表单的默认提交行为，触发rules的规则
                         className={styles.btn}
-                    >创建</Button>
+                    >{editData?._id ? '更新' : '创建'}</Button>
                 </Form.Item>
             </Form>
         </Content>

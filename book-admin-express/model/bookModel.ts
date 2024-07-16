@@ -13,8 +13,8 @@ const bookSchema = new mongoose.Schema({
         type: String,
     },
     category: {
-        // todo
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Category',
     },
     stock: {
         type: Number,
