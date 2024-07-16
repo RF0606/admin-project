@@ -45,6 +45,9 @@ export const CreateAxiosInstance = (config?: AxiosRequestConfig): AxiosInstanceT
     // config未来可以修改header
     instance.interceptors.request.use(
         function (config) {
+            const userStorage = localStorage.getItem("user");
+            const token = userStorage ? JSON.parse(userStorage).token : "";
+            config.headers["Authorization"] = "Bearer " + token;
             return config;
         },
         function (error) {

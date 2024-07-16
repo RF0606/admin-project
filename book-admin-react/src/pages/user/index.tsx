@@ -8,9 +8,9 @@ import Content from "@/components/Content";
 import { getUserList, userDelete, userUpdate } from "@/api/user";
 
 
-const STATUS = {
-  ON: "on",
-  OFF: "Off",
+enum STATUS {
+  ON = "on",
+  OFF = "Off",
 };
 
 export const STATUS_OPTIONS = [
@@ -136,13 +136,13 @@ export default function User() {
   };
 
   //user状态更新，row的type还待确定一下
-  const handleStatusChange = async (row: any) => {
+  const handleStatusChange = async (row: UserType) => {
     const status = row.status === STATUS.ON ? STATUS.OFF : STATUS.ON;
 
     await userUpdate(
-      row._id, {
+      row._id!, {
       ...row,
-      status,
+      status: status as 'off' | 'on',
     });
     fetchData(form.getFieldsValue());
   };

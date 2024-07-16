@@ -213,7 +213,7 @@ export default function Book() {
                 allowClear
                 showSearch
                 placeholder="请选择"
-                options={categoryList.map((item) => ({
+                options={categoryList?.map((item) => ({
                   label: item.name,
                   value: item._id,
                 }))}

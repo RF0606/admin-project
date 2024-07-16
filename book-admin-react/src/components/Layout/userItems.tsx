@@ -12,8 +12,9 @@ export const USER_ITEMS: MenuProps["items"] = [
         label: (
             <span
                 onClick={async () => {
-                    await logout();
+                    // await logout();
                     message.success("登出成功");
+                    localStorage.removeItem("user");
                     router.push("/login");
                 }}
             >
