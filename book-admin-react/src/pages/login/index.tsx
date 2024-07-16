@@ -12,6 +12,13 @@ export default function Login() {
     // {data:{id:xx,name:xxx}}
     // if (res.code === 200) {
       message.success("登陆成功");
+
+      // user save
+      localStorage.setItem(
+        "user", 
+        JSON.stringify({info: res.data, token: res.token})
+      );
+
       router.push("/book");
     // }
 

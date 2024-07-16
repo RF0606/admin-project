@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, ReactNode, useState } from "react";
+import React, { PropsWithChildren, ReactNode, useEffect, useState } from "react";
 import { DownOutlined } from "@ant-design/icons";
 import { Space } from "antd";
 import { Layout as AntdLayout, Dropdown, Menu } from "antd";
@@ -21,6 +21,17 @@ export const Layout: React.FC<PropsWithChildren> = ({ children }) => {
   const router = useRouter();
   //用于实现跳转之后正确显示在哪个路径上
   const activeMenu = router.pathname;
+  const [user, setUser] = useState({ info: { nickName: "" } });
+
+  //user
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const userStorage = localStorage.getItem('user');
+      if (userStorage) {
+        setUser(JSON.parse(userStorage));
+      }
+    }
+  }, [])
 
   //处理点击跳转
   const menuClick = (e: { key: string }) => {
@@ -71,7 +82,7 @@ export const Layout: React.FC<PropsWithChildren> = ({ children }) => {
               <Dropdown menu={{ items: USER_ITEMS }}>
                 <a onClick={(e) => e.preventDefault()}>
                   <Space>
-                    用户名
+                    {user?.info?.nickName ? user?.info?.nickName : '用户名'}
                     <DownOutlined />
                   </Space>
                 </a>

@@ -1,15 +1,16 @@
-import { User } from "./model";
 import BookRouter from './routes/book';
 import CategoryRouter from './routes/category';
 import UserRouter from './routes/users';
+import LoginRouter from './routes/login';
+import { expressjwt } from 'express-jwt';
+
 import express, { Request, Response, NextFunction } from 'express';
+import { SCRET_KEY } from "./constant";
+import createError from 'http-errors';
+import path from 'path';
+import cookieParser from 'cookie-parser';
+import logger from 'morgan';
 
-var createError = require('http-errors');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-
-const req = require('express/lib/request');
 require('./model/index');
 
 var app = express();
@@ -24,11 +25,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// app.use('/', indexRouter);
-// app.use('/users', usersRouter);
+app.use(expressjwt({secret: SCRET_KEY, algorithms: ['HS256'] }).unless({ 
+  path: [ '/api/login' ],
+}));
+
 app.use('/api/books', BookRouter);
 app.use('/api/categories', CategoryRouter);
 app.use('/api/users', UserRouter);
+app.use('/api/login', LoginRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req: Request, res: Response, next: NextFunction) {

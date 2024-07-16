@@ -1,0 +1,1 @@
+export const SCRET_KEY = 'peter_123456';
